@@ -51,6 +51,23 @@ while True:
 #    - `break`를 추가하여 불필요한 연산을 방지해야 함.
 
 ---
+"""
+array = [True] * 1000001
+array[0] = array[1] = False
+for i in range(2, int(1000001 ** 0.5)+1):
+    if array[i]:
+        for j in range(i*i, 1000001, i):
+            array[j] = False
+
+while True:
+    n = int(input())
+    if n == 0:
+        break
+    for i in range(2, n//2 + 1):
+        if array[i] and array[n-i]:
+            print(f"{n} = {i} + {n-i}")
+            break
+"""
 
 # ✅ [✔ 모범 답안: 올바르게 수정된 코드]
 # - 소수 판별을 효율적으로 수행하기 위해 "에라토스테네스의 체" 사용
