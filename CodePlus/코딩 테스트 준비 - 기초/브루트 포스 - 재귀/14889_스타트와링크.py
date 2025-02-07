@@ -65,3 +65,51 @@ print(minimum)
 # 🔹 `sum(board[i][j] + board[j][i] for i, j in combinations(team, 2))`와 같이 한 줄로 계산할 수 있음.
 
 # ✅ 위 수정 후 실행하면 백준에서 정답 판정!
+
+# -----------------------------------------------------
+# 백준 문제 14889: 스타트와 링크
+
+# 표준 입력을 사용하기 위한 sys 모듈 임포트
+import sys
+input = sys.stdin.read
+
+# 입력을 한 번에 읽어오기
+data = input().strip().split()
+
+# 주어진 숫자 N
+N = int(data[0])
+
+# 능력치 표 초기화
+abilities = []
+index = 1
+for i in range(N):
+    row = list(map(int, data[index:index + N]))
+    abilities.append(row)
+    index += N
+
+# 팀 나누기 백트래킹 함수 정의
+def backtrack(start, team):
+    # 팀이 절반으로 나누어진 경우
+    if len(team) == N // 2:
+        other_team = [i for i in range(N) if i not in team]
+        team_score = sum(abilities[i][j] for i in team for j in team)
+        other_team_score = sum(abilities[i][j] for i in other_team for j in other_team)
+        global min_diff
+        min_diff = min(min_diff, abs(team_score - other_team_score))
+        return
+    
+    # 가능한 팀 조합을 찾기 위한 백트래킹
+    for i in range(start, N):
+        if i not in team:
+            team.append(i)
+            backtrack(i + 1, team)
+            team.pop()
+
+# 초기값 설정
+min_diff = float('inf')
+
+# 백트래킹 함수 호출
+backtrack(0, [])
+
+# 결과 출력
+print(min_diff)
