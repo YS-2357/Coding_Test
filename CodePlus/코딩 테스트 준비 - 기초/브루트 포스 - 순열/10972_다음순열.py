@@ -40,7 +40,7 @@ def find_next(nums):
                     nums[i], nums[j] = nums[j], nums[i]  # ✅ 교환
                     break
             # 3️⃣ i+1부터 끝까지 오름차순 정렬
-            nums[i+1:] = reverse(nums[i+1:])
+            nums[i+1:] = reversed(nums[i+1:])
             print(*nums)
             return
     
