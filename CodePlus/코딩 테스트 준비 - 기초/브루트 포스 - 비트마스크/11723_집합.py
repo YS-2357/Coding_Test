@@ -76,7 +76,9 @@ for _ in range(M):
     elif operation == "remove":  # ✅ x 제거
         S &= ~(1 << num)
     elif operation == "check":  # ✅ x 포함 여부 확인 (1 또는 0 출력)
-        output.append("1\n" if (S & (1 << num)) else "0\n")
+        check = (S & (1 << num))
+        print(1 if check else 0)
+        # output.append("1\n" if (S & (1 << num)) else "0\n") # ✅ 여기서 입력만 받고 출력을 나중에 하기
     elif operation == "toggle":  # ✅ x 존재 여부 반전
         S ^= (1 << num)
     elif operation == "all":  # ✅ 1~20 전체 선택
@@ -85,7 +87,7 @@ for _ in range(M):
         S = 0
 
 # ✅ 한 번에 출력하여 시간 단축
-sys.stdout.write("".join(output))  
+# sys.stdout.write("".join(output))  
 
 # -----------------------------------------------------
 # ❌ 내가 처음 쓴 코드부터 맞을 때까지 틀렸던 점
