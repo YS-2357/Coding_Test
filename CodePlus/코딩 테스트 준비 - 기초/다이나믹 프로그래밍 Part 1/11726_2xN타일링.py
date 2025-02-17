@@ -49,3 +49,26 @@ print(dp[N])  # ✅ N을 2×N 타일링할 수 있는 방법의 개수 출력
 #    - ✅ 해결: `dp[i] = (dp[i-1] + dp[i-2]) % 10007`로 변경.
 
 # ✅ 위 수정 후 실행하면 백준에서 정답 판정! 🚀 
+
+'''
+# 잘못 푼 풀이(브루트 포스)
+import sys
+
+N = int(sys.stdin.readline())
+nums = list(map(int, sys.stdin.readline().split()))
+
+money = 0
+
+def maximize_money(count, max_money):
+    global money
+    
+    if count == N:
+        money = max(money, max_money)
+    
+    for i in range(N):
+        if count + (i + 1) <= N:
+            maximize_money(count + (i + 1), max_money + nums[i])
+
+maximize_money(0, 0)
+print(money)
+'''
