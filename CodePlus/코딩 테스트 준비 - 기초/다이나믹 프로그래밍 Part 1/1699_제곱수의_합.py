@@ -12,12 +12,10 @@ N = int(sys.stdin.readline())  # 정수 N 입력
 dp = [i for i in range(N + 1)]
 
 # ✅ 점화식을 사용한 DP 테이블 채우기 (O(N√N) 방식)
-divisors = int(N ** 0.5) + 1  # 1부터 √N까지 제곱수 탐색
-
 for i in range(N + 1):
+    divisors = int(i ** 0.5) + 1  # 1부터 √i까지 제곱수 탐색
     for j in range(1, divisors):
-        if i - j*j >= 0:  # i보다 큰 제곱수를 빼는 경우 방지
-            dp[i] = min(dp[i], dp[i - j*j] + 1)
+        dp[i] = min(dp[i], dp[i - j*j] + 1)
 
 # ✅ 결과 출력 (N을 최소 개수의 제곱수 합으로 표현하는 경우의 수)
 print(dp[N])
