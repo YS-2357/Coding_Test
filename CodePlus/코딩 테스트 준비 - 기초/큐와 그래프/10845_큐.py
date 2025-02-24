@@ -37,31 +37,26 @@ from collections import deque
 # ✅ 입력 처리
 N = int(sys.stdin.readline())  # 명령어 개수 입력
 queue = deque()  # 큐 생성
-output = []  # 출력 저장용 리스트
 
 # ✅ 명령어 처리
 for _ in range(N):
-    command = sys.stdin.readline().split()
+    command = sys.stdin.readline().strip().split()
 
     if command[0] == "push":
         queue.append(int(command[1]))  # 큐에 값 추가
     elif command[0] == "pop":
-        output.append(str(queue.popleft()) if queue else "-1")  # 큐에서 값 제거
+        print(queue.popleft() if queue else -1)  # 큐에서 값 제거
     elif command[0] == "size":
-        output.append(str(len(queue)))  # 큐 크기 출력
+        print(len(queue))  # 큐 크기 출력
     elif command[0] == "empty":
-        output.append("1" if not queue else "0")  # 큐가 비어있는지 확인
+        print(1 if not queue else 0)  # 큐가 비어있는지 확인
     elif command[0] == "front":
-        output.append(str(queue[0]) if queue else "-1")  # 큐의 앞 원소 출력
+        print(queue[0] if queue else -1)  # 큐의 앞 원소 출력
     elif command[0] == "back":
-        output.append(str(queue[-1]) if queue else "-1")  # 큐의 뒤 원소 출력
-
-# ✅ 출력 처리 (한 번에 출력하여 성능 최적화)
-sys.stdout.write("\n".join(output) + "\n")
+        print(queue[-1] if queue else -1)  # 큐의 뒤 원소 출력
 
 # -----------------------------------------------------
 # ✅ 백준 제출용 최종 정답 코드
 # - `sys.stdin.readline()`을 활용하여 빠르게 입력 처리
 # - `collections.deque`를 사용하여 O(1) 연산을 유지
-# - `sys.stdout.write()`를 사용하여 출력 속도 최적화
 # -----------------------------------------------------
