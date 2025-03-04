@@ -2,7 +2,7 @@
 # ✅ 문제 설명:
 # - N×M 크기의 배열이 주어지고, 특정 연산을 수행해야 한다.
 # - 6개의 연산 (상하반전, 좌우반전, 시계90도 회전, 반시계90도 회전, 
-#   4분면 시계방향 이동, 4분면 반시계방향 이동)을 구현해야 한다.
+#   좌상/우상/우하/좌하 시계방향 이동, 좌상/좌하/우하/우상 반시계방향 이동)을 구현해야 한다.
 # - R개의 연산이 주어졌을 때, 최종 배열 상태를 출력해야 한다.
 #
 # ✅ 입력 형식:
@@ -29,63 +29,63 @@
 import sys
 
 # ✅ 90도 회전 (시계 방향)
-# - 기존 행렬을 시계 방향으로 회전시키는 함수
-# - 새로운 행렬을 만들어 (j, i) 위치로 값을 이동
-# - N과 M의 크기가 서로 바뀌므로, 회전 후 크기를 함께 반환
 def rotate_right(matrix, n, m):
+    """ 90도 시계 방향 회전 """
     temp = [[0] * n for _ in range(m)]
     for i in range(m):
         for j in range(n):
-            temp[i][j] = matrix[n - 1 - j][i]  # 반시계 방향으로 90도 회전
+            temp[i][j] = matrix[n - 1 - j][i]
     return temp, m, n  # 회전 후 크기 변경
 
 # ✅ 90도 회전 (반시계 방향)
-# - 기존 행렬을 반시계 방향으로 회전
-# - (j, i) 위치로 값을 이동
-# - 마찬가지로 N과 M 크기가 변경됨
 def rotate_left(matrix, n, m):
+    """ 90도 반시계 방향 회전 """
     temp = [[0] * n for _ in range(m)]
     for i in range(m):
         for j in range(n):
-            temp[i][j] = matrix[j][m - 1 - i]  # 반시계 방향 90도 회전
+            temp[i][j] = matrix[j][m - 1 - i]
     return temp, m, n  # 회전 후 크기 변경
 
-# ✅ 4분면 시계 방향 이동
-# - 1번 -> 2번, 2번 -> 3번, 3번 -> 4번, 4번 -> 1번 이동
-# - 새로운 행렬을 만들어 기존 값을 이동시킴
+# ✅ 좌상/우상/우하/좌하 시계 방향 이동
 def move_clockwise(matrix, n, m):
+    """
+    4분면을 시계 방향으로 이동하는 함수
+    - 좌상 → 우상, 우상 → 우하, 우하 → 좌하, 좌하 → 좌상 이동
+    """
     temp = [[0] * m for _ in range(n)]
     for i in range(n // 2):
         for j in range(m // 2):
-            temp[i][j + m // 2] = matrix[i][j]  # 1 -> 2
+            temp[i][j + m // 2] = matrix[i][j]  # 좌상 → 우상
     for i in range(n // 2):
         for j in range(m // 2, m):
-            temp[i + n // 2][j] = matrix[i][j]  # 2 -> 3
+            temp[i + n // 2][j] = matrix[i][j]  # 우상 → 우하
     for i in range(n // 2, n):
         for j in range(m // 2, m):
-            temp[i][j - m // 2] = matrix[i][j]  # 3 -> 4
+            temp[i][j - m // 2] = matrix[i][j]  # 우하 → 좌하
     for i in range(n // 2, n):
         for j in range(m // 2):
-            temp[i - n // 2][j] = matrix[i][j]  # 4 -> 1
+            temp[i - n // 2][j] = matrix[i][j]  # 좌하 → 좌상
     return temp
 
-# ✅ 4분면 반시계 방향 이동
-# - 1번 -> 4번, 4번 -> 3번, 3번 -> 2번, 2번 -> 1번 이동
-# - 새로운 행렬을 만들어 기존 값을 이동시킴
+# ✅ 좌상/좌하/우하/우상 반시계 방향 이동
 def move_counter_clockwise(matrix, n, m):
+    """
+    4분면을 반시계 방향으로 이동하는 함수
+    - 좌상 → 좌하, 좌하 → 우하, 우하 → 우상, 우상 → 좌상 이동
+    """
     temp = [[0] * m for _ in range(n)]
     for i in range(n // 2):
         for j in range(m // 2):
-            temp[i + n // 2][j] = matrix[i][j]  # 1 -> 4
+            temp[i + n // 2][j] = matrix[i][j]  # 좌상 → 좌하
     for i in range(n // 2, n):
         for j in range(m // 2):
-            temp[i][j + m // 2] = matrix[i][j]  # 4 -> 3
+            temp[i][j + m // 2] = matrix[i][j]  # 좌하 → 우하
     for i in range(n // 2, n):
         for j in range(m // 2, m):
-            temp[i - n // 2][j] = matrix[i][j]  # 3 -> 2
+            temp[i - n // 2][j] = matrix[i][j]  # 우하 → 우상
     for i in range(n // 2):
         for j in range(m // 2, m):
-            temp[i][j - m // 2] = matrix[i][j]  # 2 -> 1
+            temp[i][j - m // 2] = matrix[i][j]  # 우상 → 좌상
     return temp
 
 # ✅ 입력 처리
@@ -104,30 +104,30 @@ for op in operations:
     elif op == 4:
         board, n, m = rotate_left(board, n, m)  # 반시계방향 회전
     elif op == 5:
-        board = move_clockwise(board, n, m)  # 4분면 시계방향 이동
+        board = move_clockwise(board, n, m)  # 좌상/우상/우하/좌하 시계방향 이동
     elif op == 6:
-        board = move_counter_clockwise(board, n, m)  # 4분면 반시계방향 이동
+        board = move_counter_clockwise(board, n, m)  # 좌상/좌하/우하/우상 반시계방향 이동
 
 # ✅ 최종 결과 출력
 for row in board:
     print(*row)
 
-# ----------------------------------------------------------
+# -----------------------------------------------------
 # ✅ 2단계에서 발생한 오류 정리 및 수정:
 # 1️⃣ **배열 반전 시 인덱스 오류**
-# 기존 코드: `matrix.reverse()`가 상하반전만 수행하고 좌우반전은 따로 처리하지 않음.
-# ✅ 해결: `board.reverse()`와 `board = [row[::-1] for row in board]`을 분리하여 구현.
+# - 기존 코드: `matrix.reverse()`가 상하반전만 수행하고 좌우반전은 따로 처리하지 않음.
+# - ✅ 해결: `board.reverse()`와 `board = [row[::-1] for row in board]`을 분리하여 구현.
 
 # 2️⃣ **시계 및 반시계 회전 시 N, M 값 유지 오류**
-# 기존 코드: `rotate_right()`와 `rotate_left()`에서 N, M 값이 변경되지 않음.
-# ✅ 해결: `return temp, m, n`을 추가하여 회전 후 크기 변경.
+# - 기존 코드: `rotate_right()`와 `rotate_left()`에서 N, M 값이 변경되지 않음.
+# - ✅ 해결: `return temp, m, n`을 추가하여 회전 후 크기 변경.
 
 # 3️⃣ **4분면 이동 연산에서 잘못된 위치 지정**
-# 기존 코드에서 4분면 이동이 잘못 설정됨.
-# ✅ 해결: `move_clockwise()`와 `move_counter_clockwise()`를 수정하여 올바른 방향 이동.
+# - 기존 코드에서 4분면 이동이 잘못 설정됨.
+# - ✅ 해결: `move_clockwise()`와 `move_counter_clockwise()`를 수정하여 올바른 방향 이동.
 
 # ✅ 최종 정리:
 # - `sys.stdin.readline()`을 사용하여 빠른 입력 처리.
 # - 6가지 연산을 개별 함수로 정의하여 코드 모듈화.
 # - N, M이 변경되는 회전 연산을 처리한 후 크기 조정.
-# ----------------------------------------------------------
+# -----------------------------------------------------
