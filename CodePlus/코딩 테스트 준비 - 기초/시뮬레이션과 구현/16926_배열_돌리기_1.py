@@ -39,55 +39,61 @@ def rotate_layers(board, N, M, R):
     3. 회전된 리스트를 다시 배열에 삽입
     """
 
-    num_layers = min(N, M) // 2  # 총 레이어 개수
+    num_layers = min(N, M) // 2  # 총 레이어 개수 (가장 바깥쪽부터 안쪽으로)
 
     for layer in range(num_layers):
-        # ✅ 현재 레이어의 좌상단 (sx, sy)과 우하단 (ex, ey) 좌표 계산
-        sx, sy = layer, layer
-        ex, ey = N - layer - 1, M - layer - 1
+        # ✅ 현재 레이어의 경계 좌표 설정
+        sx, sy = layer, layer  # 좌상단 좌표
+        ex, ey = N - layer - 1, M - layer - 1  # 우하단 좌표
 
         # ✅ 1. 레이어를 리스트로 변환
         elements = []
         
-        # → (왼쪽 → 오른쪽)
+        # 🔹 → (왼쪽 → 오른쪽) (맨 윗줄)
         for j in range(sy, ey + 1):
-            elements.append(board[sx][j])
-        # ↓ (위쪽 → 아래쪽)
+            elements.append(board[sx][j])  # (sx, j)
+
+        # 🔹 ↓ (위쪽 → 아래쪽) (맨 오른쪽 줄)
         for i in range(sx + 1, ex + 1):
-            elements.append(board[i][ey])
-        # ← (오른쪽 → 왼쪽)
-        if sx != ex:  # 세로 1줄이면 아래 이동 생략
+            elements.append(board[i][ey])  # (i, ey)
+
+        # 🔹 ← (오른쪽 → 왼쪽) (맨 아래줄)
+        if sx != ex:  # 단일 행이면 아래쪽으로 이동 불필요
             for j in range(ey - 1, sy - 1, -1):
-                elements.append(board[ex][j])
-        # ↑ (아래쪽 → 위쪽)
-        if sy != ey:  # 가로 1줄이면 위 이동 생략
+                elements.append(board[ex][j])  # (ex, j)
+
+        # 🔹 ↑ (아래쪽 → 위쪽) (맨 왼쪽 줄)
+        if sy != ey:  # 단일 열이면 위쪽으로 이동 불필요
             for i in range(ex - 1, sx, -1):
-                elements.append(board[i][sy])
+                elements.append(board[i][sy])  # (i, sy)
 
         # ✅ 2. 리스트를 R칸 회전 (왼쪽으로 R번 이동)
-        rotate_count = R % len(elements)  # 불필요한 전체 회전 방지
+        rotate_count = R % len(elements)  # 배열의 크기를 넘어가는 불필요한 회전 방지
         rotated = elements[rotate_count:] + elements[:rotate_count]
 
         # ✅ 3. 회전된 리스트를 다시 원래 배열에 채워넣기
         idx = 0  # rotated 리스트의 인덱스
         
-        # → (왼쪽 → 오른쪽)
+        # 🔹 → (왼쪽 → 오른쪽) (맨 윗줄)
         for j in range(sy, ey + 1):
-            board[sx][j] = rotated[idx]
+            board[sx][j] = rotated[idx]  # (sx, j)
             idx += 1
-        # ↓ (위쪽 → 아래쪽)
+
+        # 🔹 ↓ (위쪽 → 아래쪽) (맨 오른쪽 줄)
         for i in range(sx + 1, ex + 1):
-            board[i][ey] = rotated[idx]
+            board[i][ey] = rotated[idx]  # (i, ey)
             idx += 1
-        # ← (오른쪽 → 왼쪽)
-        if sx != ex:
+
+        # 🔹 ← (오른쪽 → 왼쪽) (맨 아래줄)
+        if sx != ex:  
             for j in range(ey - 1, sy - 1, -1):
-                board[ex][j] = rotated[idx]
+                board[ex][j] = rotated[idx]  # (ex, j)
                 idx += 1
-        # ↑ (아래쪽 → 위쪽)
+
+        # 🔹 ↑ (아래쪽 → 위쪽) (맨 왼쪽 줄)
         if sy != ey:
             for i in range(ex - 1, sx, -1):
-                board[i][sy] = rotated[idx]
+                board[i][sy] = rotated[idx]  # (i, sy)
                 idx += 1
 
 # ✅ 배열 회전 수행
