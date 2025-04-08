@@ -36,6 +36,7 @@ dy = [0, 0, -1, 1]
 
 # ✅ 주사위를 굴렸을 때의 면 변화 정의 함수
 def roll(dice, dir):
+    # 0, 1, 2, 3, 4, 5
     top, bottom, front, back, left, right = dice
     if dir == 0:  # 위쪽으로 굴림
         return [front, back, bottom, top, left, right]
