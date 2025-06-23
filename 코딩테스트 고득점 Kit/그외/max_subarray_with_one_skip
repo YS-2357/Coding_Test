@@ -1,0 +1,31 @@
+def max_subarray_with_one_skip(nums, max_sum):
+    n = len(nums)                 # ✅ [1단계] 입력 리스트 길이 저장
+    answer = 0                   # ✅ [1단계] 조건 만족하는 최대 부분 수열 길이 저장용 변수
+
+    left = 0                     # ✅ [1단계] 슬라이딩 윈도우의 왼쪽 포인터
+    current_sum = 0             # ✅ [1단계] 현재 윈도우 내 합
+    skip_used = False           # ✅ [1단계] skip(건너뛰기)을 한 번 사용했는지 여부
+    skip_index = -1             # ✅ [1단계] skip한 인덱스를 저장하기 위한 변수
+
+    for right in range(n):      # ✅ [2단계] 오른쪽 포인터를 이동하며 윈도우 확장
+        current_sum += nums[right]  # ✅ [2단계] 현재 오른쪽 값을 합에 추가
+
+        # ✅ [2단계] 현재 합이 max_sum을 초과할 경우, 윈도우를 줄이는 로직
+        while current_sum > max_sum:
+            if not skip_used:               # ✅ [2단계] 아직 skip을 사용하지 않았다면
+                skip_used = True            # → skip을 사용하고
+                skip_index = left           # → skip한 위치를 기록하고
+                current_sum -= nums[left]   # → 해당 값을 합에서 제외하고
+                left += 1                   # → 윈도우 왼쪽 포인터를 오른쪽으로 이동
+            else:
+                # ✅ [2단계] 이미 skip을 한 번 사용한 경우, 왼쪽 포인터를 줄이면서 skip 해제 필요
+                if left == skip_index:      # → skip한 위치에 도달한 경우
+                    skip_used = False       # → skip 사용을 다시 False로 초기화
+                    skip_index = -1         # → skip 위치 초기화
+                current_sum -= nums[left]   # → 왼쪽 값 제외
+                left += 1                   # → 포인터 이동
+
+        # ✅ [2단계] 현재 조건을 만족하는 윈도우 길이로 정답 갱신
+        answer = max(answer, right - left + 1)
+
+    return answer               # ✅ [3단계] 최종 최대 길이 반환
