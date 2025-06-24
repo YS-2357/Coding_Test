@@ -75,9 +75,22 @@ def solution(n, wires):
 # -----------------------------------------------------
 # 다른 사람의 풀이
 # def solution(n, wires):
-#     ans = n
-#     for sub in (wires[i+1:] + wires[:i] for i in range(len(wires))):
-#         s = set(sub[0])
+#     ans = n  # 초기값: 최악의 경우 차이 n으로 설정
+
+#     for sub in (wires[i+1:] + wires[:i] for i in range(len(wires))):  
+#         # wires에서 i번째 간선을 제거한 경우의 리스트를 sub로 순회
+
+#         s = set(sub[0])  
+#         # 첫 간선의 두 노드를 집합 s에 넣고 시작 (연결된 컴포넌트 초기화)
+
 #         [s.update(v) for _ in sub for v in sub if set(v) & s]
-#         ans = min(ans, abs(2 * len(s) - n))
-#     return ans
+#         # 연결된 노드들이 있는 간선을 계속 추가함
+#         # 즉, s에 포함된 노드와 겹치는 간선이 있다면 s에 그 노드들도 추가
+#         # 모든 연결된 노드를 s에 누적
+
+#         ans = min(ans, abs(2 * len(s) - n))  
+#         # s에는 한쪽 컴포넌트의 노드들이 들어있음 → 다른 쪽은 n - len(s)
+#         # 두 집합 차이 = |len(s) - (n - len(s))| = |2*len(s) - n|
+#         # 최솟값으로 갱신
+
+#     return ans  # 최솟값 반환
