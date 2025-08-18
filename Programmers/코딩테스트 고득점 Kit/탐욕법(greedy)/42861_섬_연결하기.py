@@ -80,3 +80,74 @@ def solution(n, costs):
 #   → E = len(costs), α(N) = 아커만 함수 (거의 상수)
 
 # -----------------------------------------------------
+# 다른 풀이 1
+# def solution(n, costs):
+#     # 1) 간선 비용 오름차순 정렬: (w, u, v) 형태로 다루면 편함
+#     edges = sorted([(w, u, v) for u, v, w in costs])
+
+#     # 2) Union-Find 준비
+#     parent = list(range(n))    # parent[x] = x의 대표(루트)
+#     size = [1] * n             # 루트 트리의 크기(랭크 대신 size 사용)
+
+#     def find(x):
+#         # 경로 압축: 루트를 바로 가리키도록 갱신 (재귀 or 반복형 모두 OK)
+#         while parent[x] != x:
+#             parent[x] = parent[parent[x]]
+#             x = parent[x]
+#         return x
+
+#     def union(a, b):
+#         ra, rb = find(a), find(b)
+#         if ra == rb:
+#             return False  # 같은 집합 → 이 간선 채택하면 사이클
+#         # 사이즈 기준으로 합치기(작은 트리를 큰 트리에 붙임)
+#         if size[ra] < size[rb]:
+#             ra, rb = rb, ra
+#         parent[rb] = ra
+#         size[ra] += size[rb]
+#         return True
+
+#     # 3) 간선 선택
+#     total = 0
+#     taken = 0
+#     for w, u, v in edges:
+#         if union(u, v):        # 사이클이 아니면 채택
+#             total += w
+#             taken += 1
+#             if taken == n - 1: # MST 완성
+#                 break
+#     return total
+
+# -----------------------------------------------------
+# 다른 풀이 2
+# import heapq
+
+# def solution(n, costs):
+#     # 1) 인접리스트 구성: 각 정점에서 (비용, 이웃) 형태로 저장
+#     adj = [[] for _ in range(n)]
+#     for u, v, w in costs:
+#         adj[u].append((w, v))
+#         adj[v].append((w, u))
+
+#     # 2) Prim: 임의의 정점(0)에서 시작
+#     visited = [False] * n
+#     pq = [(0, 0)]          # (간선비용, 정점) — 시작 비용 0
+#     total = 0
+#     picked = 0
+
+#     while pq and picked < n:
+#         w, u = heapq.heappop(pq)
+#         if visited[u]:
+#             continue
+#         # 새 정점 u 채택
+#         visited[u] = True
+#         total += w
+#         picked += 1
+#         # u에서 뻗는 간선들을 힙에 추가
+#         for nw, nv in adj[u]:
+#             if not visited[nv]:
+#                 heapq.heappush(pq, (nw, nv))
+
+#     # 연결 불가능 입력은 없다고 가정(문제 보장). 그래도 안전하게 확인하려면:
+#     # if picked < n: return ??? (문제 보장으로 불필요)
+#     return total
