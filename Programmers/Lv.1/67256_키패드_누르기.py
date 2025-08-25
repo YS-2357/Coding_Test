@@ -64,3 +64,44 @@ def solution(numbers, hand):
 # - 왼손/오른손 현재 좌표 유지
 # - 맨해튼 거리 비교, 동률 시 hand 선호 반영
 # - 선택 후 해당 손 위치 갱신
+
+# -----------------------------------------------------
+# 다른 풀이
+# def solution(numbers, hand):
+#     # 숫자→좌표 매핑(리스트 인덱스 활용; 0은 인덱스 0에 넣기 위해 맨 앞에 둠)
+#     pos = [(3,1),  # 0
+#            (0,0), (0,1), (0,2),
+#            (1,0), (1,1), (1,2),
+#            (2,0), (2,1), (2,2)]
+#     left_col  = {1, 4, 7}
+#     right_col = {3, 6, 9}
+#     prefer_right = (hand == "right")
+
+#     lx, ly = 3, 0  # '*' 시작
+#     rx, ry = 3, 2  # '#' 시작
+#     out = []
+
+#     for num in numbers:
+#         # 좌/우 고정 열 처리
+#         if num in left_col:
+#             lx, ly = pos[num]
+#             out.append('L')
+#             continue
+#         if num in right_col:
+#             rx, ry = pos[num]
+#             out.append('R')
+#             continue
+
+#         # 가운데 열: 거리 비교
+#         tx, ty = pos[num]
+#         ld = abs(lx - tx) + abs(ly - ty)
+#         rd = abs(rx - tx) + abs(ry - ty)
+
+#         if ld < rd or (ld == rd and not prefer_right):
+#             lx, ly = tx, ty
+#             out.append('L')
+#         else:
+#             rx, ry = tx, ty
+#             out.append('R')
+
+#     return ''.join(out)
