@@ -65,3 +65,67 @@ class Solution:
 # - 행/열/박스 제약 검사(set)
 # - 시간복잡도: 최악 지수적(하지만 문제 보장상 실전 통과)
 # - 공간복잡도: O(1) (보드 크기 고정, 보조 자료구조 상수 크기)
+
+# -----------------------------------------------------
+# 다른 풀이
+# ALL = (1<<9) - 1  # 0b111111111
+# class Solution:
+#     def solveSudoku(self, board: List[List[str]]) -> None:
+#         """
+#         Do not return anything, modify board in-place instead.
+#         """
+#         row = [0]*9; col = [0]*9; box = [0]*9
+#         empties = []
+
+#         def bit(d): return 1 << (ord(d)-ord('1'))
+#         def box_id(r, c): return (r//3)*3 + (c//3)
+
+#         # 초기화
+#         for r in range(9):
+#             for c in range(9):
+#                 v = board[r][c]
+#                 if v == '.':
+#                     empties.append((r, c))
+#                 else:
+#                     b = box_id(r,c); m = bit(v)
+#                     row[r] |= m; col[c] |= m; box[b] |= m
+
+#         def candidates(r, c):
+#             b = box_id(r,c)
+#             used = row[r] | col[c] | box[b]
+#             return ALL ^ used  # 가능한 비트들(1=가능)
+
+#         def choose_cell():
+#             # MRV: 후보가 가장 적은 칸 선택
+#             best_i, best_mask, best_cnt = -1, 0, 10
+#             for i, (r,c) in enumerate(empties):
+#                 if board[r][c] != '.': continue
+#                 mask = candidates(r,c)
+#                 cnt = mask.bit_count()
+#                 if cnt < best_cnt:
+#                     best_cnt = cnt; best_i = i; best_mask = mask
+#                     if cnt == 1: break
+#             return best_i, best_mask
+
+#         def backtrack():
+#             # 모든 빈칸이 채워졌는지 확인
+#             if all(board[r][c] != '.' for r,c in empties):
+#                 return True
+#             i, mask = choose_cell()
+#             r, c = empties[i]; b = box_id(r,c)
+
+#             # 한 비트씩 꺼내 시도
+#             m = mask
+#             while m:
+#                 x = m & -m                 # 최하위 1비트
+#                 d = x.bit_length()         # 1~9
+#                 ch = chr(ord('0') + d)
+#                 board[r][c] = ch
+#                 row[r] |= x; col[c] |= x; box[b] |= x
+#                 if backtrack(): return True
+#                 row[r] ^= x; col[c] ^= x; box[b] ^= x
+#                 board[r][c] = '.'
+#                 m -= x
+#             return False
+
+#         backtrack()
