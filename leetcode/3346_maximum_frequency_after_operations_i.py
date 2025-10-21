@@ -1,6 +1,6 @@
-# 3254_maximum_frequency_of_an_element_after_operations_i.py
+# 3346_maximum_frequency_after_operations_i.py
 # -----------------------------------------------------
-# ✅ 제목: Maximum Frequency of an Element After Performing Operations I (LeetCode 3254)
+# ✅ 제목: Maximum Frequency of an Element After Performing Operations I (LeetCode 3346)
 # ✅ 문제 설명(요약):
 # - 정수 배열 nums와 정수 k, numOperations가 주어진다.
 # - numOperations번의 연산 동안, 한 번도 선택하지 않은 인덱스 i를 고르고
