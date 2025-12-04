@@ -122,4 +122,25 @@ class Solution:
 #         남은 중앙 구간에서 'L'과 'R'의 개수를 세는 방식도 있다.
 #       · 이때 중앙 구간의 'L'/'R' 개수 = 결국 충돌로 인해 멈추게 되는 차량의 수 = 충돌 횟수.
 #   - 현재 풀이는 그 아이디어를 "실제 스캔 로직" 형태로 옮긴 구현이라고 볼 수 있다.
+
+# class Solution:
+#     def countCollisions(self, directions: str) -> int:
+#         i = 0
+#         # 왼쪽 끝에서 연속된 'L'은 충돌에 참여하지 않고 빠져나가므로 제거
+#         while i < len(directions) and directions[i] == "L":
+#             i += 1
+
+#         j = len(directions) - 1
+#         # 오른쪽 끝에서 연속된 'R'도 충돌 없이 빠져나가므로 제거
+#         while j >= 0 and directions[j] == "R":
+#             j -= 1
+
+#         ans = 0
+#         # i~j 구간은 "충돌 가능성이 있는 중앙 구간"
+#         for k in range(i, j+1):
+#             # 이 구간의 L 또는 R 은 모두 언젠가 충돌을 거쳐 멈춘다
+#             if directions[k] == "R" or directions[k] == "L":
+#                ans += 1
+
+#         return ans
 # -----------------------------------------------------
